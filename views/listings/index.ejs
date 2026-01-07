@@ -1,0 +1,136 @@
+<% layout("layout/boilerplate") %>
+<style>
+  #filters {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .filter {
+    display: flex;              /* 🔑 IMPORTANT */
+    flex-direction: column;     /* icon above text */
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
+    color: inherit;
+
+    margin-right: 1.8rem;
+    margin-top: 2rem;
+    opacity: 0.7;
+  }
+
+  .filter p {
+    margin: 0;                  /* removes default <p> spacing */
+  }
+
+  .filter:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
+
+</style>
+  <div id="filters">
+    <a href="/listings?category=Trending" class="filter">
+      <i class="fa-solid fa-fire"></i>
+      <p>Trending</p>
+    </a>
+
+    <a href="/listings?category=Rooms" class="filter">
+      <i class="fa-solid fa-bed"></i>
+      <p>Rooms</p>
+    </a>
+
+    <a href="/listings?category=Iconic cities" class="filter">
+      <i class="fa-solid fa-mountain-city"></i>
+      <p>Iconic cities</p>
+    </a>
+
+    <a href="/listings?category=Mountains" class="filter">
+      <i class="fa-solid fa-mountain"></i>
+      <p>Mountains</p>
+    </a>
+
+    <a href="/listings?category=Pools" class="filter">
+      <i class="fa-solid fa-person-swimming"></i>
+      <p>Pools</p>
+    </a>
+
+    <a href="/listings?category=Hotels" class="filter">
+      <i class="fa-solid fa-person-walking-arrow-right"></i>
+      <p>Hotels</p>
+    </a>
+
+    <a href="/listings?category=Villas" class="filter">
+      <i class="fa-solid fa-house-chimney"></i>
+      <p>Villas</p>
+    </a>
+
+    <a href="/listings?category=Beaches" class="filter">
+      <i class="fa-solid fa-umbrella-beach"></i>
+      <p>Beaches</p>
+    </a>
+
+    <a href="/listings?category=Farms" class="filter">
+      <i class="fa-solid fa-seedling"></i>
+      <p>Farms</p>
+    </a>
+
+    <a href="/listings?category=Arctic" class="filter">
+      <i class="fa-solid fa-snowflake"></i>
+      <p>Arctic</p>
+    </a>
+    <div class="tax-toggle">
+      <div class="form-check-reverse form-switch">
+        <input 
+          class="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="flexSwitchCheckDefault"
+        />
+        <label class="form-check-label" for="flexSwitchCheckDefault">Display Total after taxes</label>
+      </div>
+    </div>
+  </div>
+  <% if (alllistings.length === 0 && search) { %>
+    <div class="text-center mt-4">
+      <h4>No listings found for "<%= search %>" 😕</h4>
+      <p>Try searching a different location or keyword.</p>
+      <a href="/listings" class="btn btn-outline-dark mt-2">
+        Clear Search
+      </a>
+    </div>
+  <% } %>
+
+  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-3">
+    <% for (let listing of alllistings) { %>
+      <div class="listing-card">
+        <!-- ✅ Anchor only around the image/title, not the whole card -->
+        <a href="/listings/<%= listing._id %>" class="listing-link">
+          <img src="<%= listing.image.url %>" class="card-img-top" alt="image" style="width: 18rem;">
+          <div class="card-body">
+            <p class="card-text">
+              <b><%= listing.title %></b><br>
+              ₹<%= listing.price.toLocaleString("en-IN") %>/night
+              <i class="tax-info">&nbsp; &nbsp; +18% GST</i>
+            </p>
+          </div>
+        </a>
+      </div>
+    <% } %>
+  </div>
+
+<script>
+  let taxSwitch=document.getElementById("flexSwitchCheckDefault");
+  taxSwitch.addEventListener("click", ()=>{
+    let taxInfo=document.getElementsByClassName("tax-info");
+    for(info of taxInfo){
+      if(info.style.display!="inline"){
+        info.style.display="inline";
+      }else{
+        info.style.display="none";
+      }
+    }
+  })
+</script>
