@@ -92,7 +92,10 @@ app.use(express.static(path.join(__dirname,"/public")));
 // let mongo_url="mongodb://127.0.0.1:27017/wanderlust";
 
 
-
+// HOME → redirect to listings
+app.get("/", (req, res) => {
+    res.redirect("/listings");
+});
 
 
 app.use("/listings",listingRouter);
@@ -110,6 +113,9 @@ app.use("/",userRouter);
 // });
 
 
+
+
+
 app.all(/.*/,(req,res,next)=>{
     next(new ExpressError(404,"Page not found!"));
 });
@@ -124,9 +130,6 @@ app.use((err, req, res, next) => {
 });
 
 
-app.get("/",(req,res)=>{
-    res.send("Hey there!");
-});
 app.get("/force-error", (req, res, next) => {
     next("FORCED ERROR TEST");
 });
